@@ -92,9 +92,22 @@ def sim_pearson(prefs,p1,p2):
 
     return r
 
+def sim_jaccard (prefs, person1, person2):
+    union = {}
+    intersec = {}
+    for item in prefs[person1]:
+        if item in prefs[person2]:
+            intersec[item] = 1
+        union[item] = 1
+
+    for item in prefs[person2]:
+        union[item] = 1
+
+    return float(len(intersec)) / float(len(union))
+
 #Returns the best match for person from the prefs in dictionary
 #Number of results and similarity function are optional parameters
-def topMatches(prefs,person,n=5,similarity=sim_pearson):
+def topMatches(prefs,person,n=5,similarity=sim_jaccard):
     scores=[(similarity(prefs,person,other),other) for other in prefs if other!=person]
 
     scores.sort()
@@ -128,4 +141,15 @@ def transformsPrefs(prefs):
         for item in prefs[person]:
             result.setdefault(item,{})
             result[item][person]=prefs[person][item]
+    return result
+
+def calculateSimilarItems(prefs,n=10):
+    result={}
+    itemsPrefs=transformsPrefs(prefs)
+    c=0
+    for item in itemsPrefs:
+        c+=1
+        if c%100==0: print "%d / %d" % (c,len(itemsPrefs))
+        scores=topMatches(itemsPrefs,item,n=n,similarity=sim_distance)
+        result[item]=scores
     return result
