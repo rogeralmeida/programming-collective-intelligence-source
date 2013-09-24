@@ -153,3 +153,39 @@ def calculateSimilarItems(prefs,n=10):
         scores=topMatches(itemsPrefs,item,n=n,similarity=sim_distance)
         result[item]=scores
     return result
+
+def getRecommendedItems(prefs,itemMatch,user):
+    userRatings=prefs[user]
+    scores={}
+    totalSim={}
+
+    for (item,rating) in userRatings.items():
+        for (similarity,item2) in itemMatch[item]:
+            if item2 in userRatings: continue
+
+            scores.setdefault(item2,0)
+            scores[item2]+=similarity*rating
+
+            totalSim.setdefault(item2,0)
+            totalSim[item2]+=similarity
+
+    rankings=[(score/totalSim[item],item) for item,score in scores.items()]
+
+    rankings.sort()
+    rankings.reverse()
+    return rankings
+
+def loadMovieLens(path='ml-1m/'):
+    movies={}
+    for line in open(path+'movies.dat'):
+        print 'movie: '+line
+        (id,title)=line.split('::')[0:2]
+        movies[id]=title
+        print movies[id]
+
+    prefs={}
+    for line in open(path+'ratings.dat'):
+        (user,movieid,rating,ts)=line.split('::')
+        prefs.setdefault(user,{})
+        prefs[user][movies[movieid]]=float(rating)
+    return prefs
