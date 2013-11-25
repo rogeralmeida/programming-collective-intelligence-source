@@ -1,0 +1,9 @@
+http://feeds.feedburner.com/thoughtworks-blogs
+http://blog.caelum.com.br/feed/
+http://www.drdobbs.com/rss/architecture-and-design
+http://www.drdobbs.com/rss/database
+http://www.drdobbs.com/rss/jvm
+http://www.drdobbs.com/rss/open-source
+http://www.drdobbs.com/rss/web-development
+http://www.drdobbs.com/rss/cloud
+http://www.infoq.com/rss/rss.action?token=Ky3HzTOTKhmRspRqQaZzv0W9ltMpl54D
